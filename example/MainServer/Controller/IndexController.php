@@ -1,15 +1,11 @@
 <?php
 namespace Imi\Smarty\Example\MainServer\Controller;
 
-use Imi\Aop\Annotation\Inject;
-use Imi\Util\Http\MessageUtil;
 use Imi\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Middleware;
-use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * @Controller("/")
@@ -25,7 +21,6 @@ class IndexController extends HttpController
      */
     public function index()
     {
-        var_dump($this->request->get(), $this->request->post(), $this->request->getCookieParams(), $this->request->getServerParams());
         $datetime = date('Y-m-d H:i:s');
         return [
             'datetime'  =>  $datetime,

@@ -1,13 +1,15 @@
 <?php
-namespace Imi\Smarty;
+namespace Imi\Smarty\Handler;
 
+use Imi\Util\Imi;
+use Imi\Event\Event;
+use Imi\RequestContext;
+use Imi\Bean\Annotation\Bean;
 use Imi\Server\View\Engine\IEngine;
 use Imi\Server\Http\Message\Response;
-use Imi\Util\Imi;
-use Imi\RequestContext;
-use Imi\Event\Event;
 
 /**
+ * @Bean("SmartyEngine")
  * Smarty 模版引擎
  */
 class SmartyEngine implements IEngine
@@ -19,12 +21,36 @@ class SmartyEngine implements IEngine
      */
     private static $instances = [];
     
+    /**
+     * 缓存目录
+     *
+     * @var string
+     */
     protected $cacheDir;
 
+    /**
+     * 编译目录
+     *
+     * @var string
+     */
     protected $compileDir;
 
+    /**
+     * 是否开启缓存
+     * 
+     * \Smarty::CACHING_OFF
+     * \Smarty::CACHING_LIFETIME_CURRENT
+     * \Smarty::CACHING_LIFETIME_SAVED
+     *
+     * @var int
+     */
     protected $caching;
 
+    /**
+     * 缓存有效时间
+     *
+     * @var int
+     */
     protected $cacheLifetime;
 
     public function render(Response $response, $fileName, $data = []): Response

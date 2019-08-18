@@ -30,13 +30,24 @@ return [
         ],
         'HtmlView'    =>    [
             'templatePath'      =>  dirname(__DIR__) . '/template/',
-            'templateEngine'    =>  \Imi\Smarty\SmartyEngine::class,
+            'templateEngine'    =>  'SmartyEngine',
             // 支持的模版文件扩展名，优先级按先后顺序
             'fileSuffixs'        =>    [
                 'tpl',
                 'html',
                 'php'
             ],
-        ]
+        ],
+        // 可选项
+        'SmartyEngine' => [
+            // 缓存目录
+            'cacheDir'      =>  null,
+            // 编译目录
+            'compileDir'    =>  null,
+            // 是否开启缓存，默认不开启
+            'caching'       =>  null,
+            // 缓存有效时间
+            'cacheLifetime' =>  null,
+        ],
     ],
 ];
