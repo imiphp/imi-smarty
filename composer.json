@@ -1,10 +1,9 @@
 {
     "name": "imiphp/imi-smarty",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "支持在 imi 框架中使用 Smarty 模版引擎",
     "require": {
-        "php": ">=7.4 <8.2",
         "smarty/smarty": "~3.1"
     },
     "require-dev": {
@@ -34,5 +33,7 @@
         "pre-update-cmd": "Imi\\Smarty\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\Smarty\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Smarty\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

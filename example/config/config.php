@@ -6,27 +6,27 @@ use function Imi\env;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Smarty\Example',
+    'namespace'         => 'Imi\Smarty\Example',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\Smarty\Example\Listener',
         'Imi\Smarty\Example\Task',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole' => 'Imi\Swoole',
         'Smarty' => 'Imi\Smarty',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'    => 'Imi\Smarty\Example\MainServer',
         'type'         => Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
@@ -34,6 +34,7 @@ return [
         'configs'      => [
             'worker_num'        => 1,
             'task_worker_num'   => 1,
+            'max_wait_time'     => 30,
         ],
     ],
 
@@ -42,10 +43,10 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         // 主数据库
         'maindb'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -60,8 +61,8 @@ return [
                 'charset'     => 'utf8mb4',
             ],
         ],
-        'redis'    => [
-            'pool'    => [
+        'redis'     => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -76,19 +77,19 @@ return [
     ],
 
     // 数据库配置
-    'db'    => [
+    'db'                => [
         // 数默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
-    'memoryTable'   => [
+    'memoryTable'       => [
         't1'    => [
             'columns'   => [
                 ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
@@ -99,7 +100,7 @@ return [
     ],
 
     // 锁
-    'lock'  => [
+    'lock'              => [
         'list'  => [
             'atomic' => [
                 'class'     => 'AtomicLock',
@@ -111,11 +112,11 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    => [
+    'atomics'           => [
         'atomicLock'   => 1,
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [
