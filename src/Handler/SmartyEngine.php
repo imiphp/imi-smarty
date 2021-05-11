@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Smarty\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\View\Engine\IEngine;
 use Imi\Util\Imi;
 
@@ -17,24 +19,18 @@ class SmartyEngine implements IEngine
 {
     /**
      * Smarty 实例列表.
-     *
-     * @var array
      */
-    private static $instances = [];
+    private static array $instances = [];
 
     /**
      * 缓存目录.
-     *
-     * @var string
      */
-    protected $cacheDir;
+    protected ?string $cacheDir = null;
 
     /**
      * 编译目录.
-     *
-     * @var string
      */
-    protected $compileDir;
+    protected ?string $compileDir = null;
 
     /**
      * 是否开启缓存.
@@ -42,39 +38,35 @@ class SmartyEngine implements IEngine
      * \Smarty::CACHING_OFF
      * \Smarty::CACHING_LIFETIME_CURRENT
      * \Smarty::CACHING_LIFETIME_SAVED
-     *
-     * @var int
      */
-    protected $caching;
+    protected int $caching = 0;
 
     /**
      * 缓存有效时间.
-     *
-     * @var int
      */
-    protected $cacheLifetime;
+    protected int $cacheLifetime = 0;
 
-    public function render(Response $response, $fileName, $data = []): Response
+    /**
+     * @param mixed $data
+     */
+    public function render(IHttpResponse $response, string $fileName, $data = []): IHttpResponse
     {
-        $smarty = $this->newSmartyInstance($response->getServerInstance()->getName());
+        $smarty = $this->newSmartyInstance();
         $smarty->assign($data);
         if (!is_file($fileName))
         {
             return $response;
         }
         $content = $smarty->fetch($fileName, 'abc');
+        $response->getBody()->write($content);
 
-        return $response->write($content);
+        return $response;
     }
 
     /**
      * 获取 Smarty 实例.
-     *
-     * @param string|null $serverName
-     *
-     * @return \Smarty
      */
-    public function newSmartyInstance($serverName = null)
+    public function newSmartyInstance(?string $serverName = null): \Smarty
     {
         if (null === $serverName)
         {

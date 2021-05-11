@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 function checkHttpServerStatus(): bool
 {
@@ -20,8 +23,6 @@ function checkHttpServerStatus(): bool
 
 /**
  * 开启服务器.
- *
- * @return void
  */
 function startServer(): void
 {
@@ -38,13 +39,13 @@ function startServer(): void
         // start server
         $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
         echo "Starting {$name}...", \PHP_EOL;
-        echo `{$cmd}`, \PHP_EOL;
+        echo shell_exec("{$cmd}"), \PHP_EOL;
 
         register_shutdown_function(function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
             echo "Stoping {$name}...", \PHP_EOL;
-            echo `{$cmd}`, \PHP_EOL;
+            echo shell_exec("{$cmd}"), \PHP_EOL;
             echo "{$name} stoped!", \PHP_EOL;
         });
 

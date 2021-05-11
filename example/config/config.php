@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Smarty\Example',
@@ -17,13 +19,14 @@ return [
 
     // 组件命名空间
     'components'    => [
-        'Smarty'       => 'Imi\Smarty',
+        'Swoole' => 'Imi\Swoole',
+        'Smarty' => 'Imi\Smarty',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\Smarty\Example\MainServer',
-        'type'         => Imi\Server\Type::HTTP,
+        'type'         => Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
         'port'         => 13456,
         'configs'      => [
@@ -40,67 +43,32 @@ return [
     'pools'    => [
         // 主数据库
         'maindb'    => [
-            // 同步池子
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Db\Pool\SyncDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'username'    => 'root',
-                    'password'    => 'root',
-                    'database'    => 'mysql',
-                    'charset'     => 'utf8mb4',
+            'pool'    => [
+                'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            // 异步池子，worker进程使用
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'username'    => 'root',
-                    'password'    => 'root',
-                    'database'    => 'mysql',
-                    'charset'     => 'utf8mb4',
-                ],
+            'resource'    => [
+                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'username'    => 'root',
+                'password'    => 'root',
+                'database'    => 'mysql',
+                'charset'     => 'utf8mb4',
             ],
         ],
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'        => 6379,
+            'pool'    => [
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'        => 6379,
-                ],
+            'resource'    => [
+                'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'        => 6379,
             ],
         ],
     ],
@@ -143,5 +111,40 @@ return [
     // atmoic 配置
     'atomics'    => [
         'atomicLock'   => 1,
+    ],
+    // 日志配置
+    'logger' => [
+        'channels' => [
+            'imi' => [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                    [
+                        'class'     => \Monolog\Handler\RotatingFileHandler::class,
+                        'construct' => [
+                            'filename' => dirname(__DIR__) . '/.runtime/logs/log.log',
+                        ],
+                        'formatter' => [
+                            'class'     => \Monolog\Formatter\LineFormatter::class,
+                            'construct' => [
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

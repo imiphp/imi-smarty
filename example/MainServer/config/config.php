@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'configs'    => [
     ],
@@ -43,9 +45,9 @@ return [
             // 编译目录
             'compileDir'    => null,
             // 是否开启缓存，默认不开启
-            'caching'       => null,
+            'caching'       => 0,
             // 缓存有效时间
-            'cacheLifetime' => null,
+            'cacheLifetime' => 0,
         ],
     ],
 ];
