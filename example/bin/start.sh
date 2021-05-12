@@ -4,4 +4,4 @@ __DIR__=$(cd `dirname $0`; pwd)
 
 ${__DIR__}/stop.sh
 
-nohup /usr/bin/env php "$__DIR__/imi" server/start > /dev/null 2>&1 &
+nohup $__DIR__/imi server/start > "$__DIR__/../.runtime/logs/cli.log" 2>&1 & echo $! > "$__DIR__/server.pid"
