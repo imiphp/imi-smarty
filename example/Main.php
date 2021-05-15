@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Smarty\Example;
 
-use Imi\Main\AppBaseMain;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Imi\Main\AppBaseMain;
 
 class Main extends AppBaseMain
 {
@@ -11,5 +12,4 @@ class Main extends AppBaseMain
         // 这里可以做一些初始化操作，如果需要的话
         AnnotationReader::addGlobalIgnoredName('testdox');
     }
-
 }
