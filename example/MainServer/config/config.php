@@ -1,53 +1,51 @@
 <?php
 
-use Imi\Log\LogLevel;
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Smarty\Example\MainServer\Controller',
     ],
-    'beans'    =>    [
-        'SessionManager'    =>    [
-            'handlerClass'    =>    \Imi\Server\Session\Handler\File::class,
+    'beans'    => [
+        'SessionManager'    => [
+            'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
-        'SessionFile'    =>    [
-            'savePath'    =>    dirname(__DIR__, 2) . '/.session/',
+        'SessionFile'    => [
+            'savePath'    => dirname(__DIR__, 2) . '/.session/',
         ],
-        'SessionConfig'    =>    [
-
+        'SessionConfig'    => [
         ],
-        'SessionCookie'    =>    [
-            'lifetime'    =>    86400 * 30,
+        'SessionCookie'    => [
+            'lifetime'    => 86400 * 30,
         ],
-        'HttpDispatcher'    =>    [
-            'middlewares'    =>    [
+        'HttpDispatcher'    => [
+            'middlewares'    => [
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
                 \Imi\Smarty\Example\MainServer\Middleware\PoweredBy::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'HtmlView'    =>    [
-            'templatePath'      =>  dirname(__DIR__) . '/template/',
-            'templateEngine'    =>  'SmartyEngine',
+        'HtmlView'    => [
+            'templatePath'      => dirname(__DIR__) . '/template/',
+            'templateEngine'    => 'SmartyEngine',
             // 支持的模版文件扩展名，优先级按先后顺序
-            'fileSuffixs'        =>    [
+            'fileSuffixs'        => [
                 'tpl',
                 'html',
-                'php'
+                'php',
             ],
         ],
         // 可选项
         'SmartyEngine' => [
             // 缓存目录
-            'cacheDir'      =>  null,
+            'cacheDir'      => null,
             // 编译目录
-            'compileDir'    =>  null,
+            'compileDir'    => null,
             // 是否开启缓存，默认不开启
-            'caching'       =>  null,
+            'caching'       => null,
             // 缓存有效时间
-            'cacheLifetime' =>  null,
+            'cacheLifetime' => null,
         ],
     ],
 ];

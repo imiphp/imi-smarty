@@ -1,11 +1,12 @@
 <?php
+
 namespace Imi\Smarty\Example\MainServer\Controller;
 
 use Imi\Controller\HttpController;
-use Imi\Server\View\Annotation\View;
-use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Route\Annotation\Route;
+use Imi\Server\View\Annotation\View;
 
 /**
  * @Controller("/")
@@ -17,13 +18,14 @@ class IndexController extends HttpController
      * @Route("/")
      * @View(renderType="html", template="index")
      *
-     * @return void
+     * @return mixed
      */
     public function index()
     {
         $datetime = date('Y-m-d H:i:s');
+
         return [
-            'datetime'  =>  $datetime,
+            'datetime'  => $datetime,
         ];
     }
 
@@ -31,23 +33,22 @@ class IndexController extends HttpController
      * @Action
      * @View(renderType="html", template="test")
      *
-     * @return void
+     * @return mixed
      */
     public function test()
     {
         return [
-            'content'   =>  'imi nb',
+            'content'   => 'imi nb',
         ];
     }
 
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function ping()
     {
         return $this->response->write('pong');
     }
-
 }
